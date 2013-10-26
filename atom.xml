@@ -1,16 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[blog.kuroyam.info]]></title>
   <link href="http://kuroyam.github.io/atom.xml" rel="self"/>
   <link href="http://kuroyam.github.io/"/>
-  <updated>2013-10-26T14:40:26+09:00</updated>
+  <updated>2013-10-26T14:44:58+09:00</updated>
   <id>http://kuroyam.github.io/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[kuroyam]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hello Octopress]]></title>
+    <link href="http://kuroyam.github.io/blog/2013/10/24/octopress/"/>
+    <updated>2013-10-24T23:11:00+09:00</updated>
+    <id>http://kuroyam.github.io/blog/2013/10/24/octopress</id>
+    <content type="html"><![CDATA[<p>もっとアウトプットしていこうと思ったので。</p>
+
+<p>なんかこう、エンジニアっぽい感じがするって理由で Github Pages と Octopress を使うことにした。<br/>
+Markdownの練習も兼ねてる</p>
+
+<hr />
+
+<p>参考<br/>
+・<a href="http://tokkonopapa.github.io/blog/2011/12/30/octopress-on-github-and-bitbucket/">Octopressのインストールから運用管理まで &ndash; T.I.D.</a><br/>
+・<a href="http://blog.glidenote.com/blog/2011/12/20/how-to-use-custom-domain-on-github-pages/">GitHub PagesでCustom Domainを利用する &ndash; Glide Note &ndash; グライドノート</a></p>
+]]></content>
+  </entry>
   
 </feed>
