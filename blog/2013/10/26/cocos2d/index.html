@@ -5,14 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Hello Octopress - blog.kuroyam.info</title>
+  <title>cocos2d-xとラムダ式でCCCallBlockっぽいことをする - blog.kuroyam.info</title>
   <meta name="author" content="kuroyam">
 
   
-  <meta name="description" content="もっとアウトプットしていこうと思ったので。 なんかこう、エンジニアっぽい感じがするって理由で Github Pages と Octopress を使うことにした。
-Markdownの練習も兼ねてる 参考
-・Octopressのインストールから運用管理まで &ndash; T.I.D.
-・ &hellip;">
+  <meta name="description" content="cocos2d for iPhoneには CCCallBlock というすごく便利なメソッドがありました。 アニメーションシーケンスの中でblocksを呼べちゃうやつですね。
+アニメーション終了時になにか処理したいときとか、callbackとしてblocksを渡したりしたいときに便利でした &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +19,7 @@ Markdownの練習も兼ねてる 参考
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://kuroyam.github.io/blog/2013/10/24/octopress/">
+  <link rel="canonical" href="http://kuroyam.github.io/blog/2013/10/26/cocos2d/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -81,7 +79,7 @@ Markdownの練習も兼ねてる 参考
   
   <header>
     
-      <h1 class="entry-title">Hello Octopress</h1>
+      <h1 class="entry-title">cocos2d-xとラムダ式でCCCallBlockっぽいことをする</h1>
     
     
       <p class="meta">
@@ -97,23 +95,83 @@ Markdownの練習も兼ねてる 参考
   
 
 
-<time datetime="2013-10-24T23:11:00+09:00" pubdate data-updated="true">Oct 24<span>th</span>, 2013</time>
+<time datetime="2013-10-26T23:50:00+09:00" pubdate data-updated="true">Oct 26<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>もっとアウトプットしていこうと思ったので。</p>
+<div class="entry-content"><p>cocos2d for iPhoneには CCCallBlock というすごく便利なメソッドがありました。</p>
 
-<p>なんかこう、エンジニアっぽい感じがするって理由で Github Pages と Octopress を使うことにした。<br/>
-Markdownの練習も兼ねてる</p>
+<p>アニメーションシーケンスの中でblocksを呼べちゃうやつですね。<br/>
+アニメーション終了時になにか処理したいときとか、callbackとしてblocksを渡したりしたいときに便利でした。</p>
 
-<hr />
+<pre><code>- (void)deadAnimation {
+    id animation = [CCAnimation animationWithSpriteFrames:_frames];
+    id animate   = [CCAnimate actionWithAnimation:animation];
+    id blocks    = [CCCallBlock actionWithBlock:
+                    ^{ 
+                        [_sprite removeFromParentAndCleanup:YES];
+                        [_score addScore:1000];
+                        [_sound playSE];
+                    }];
+    id sequence  = [CCSequence actions:animate, blocks, nil];
 
-<p>参考<br/>
-・<a href="http://tokkonopapa.github.io/blog/2011/12/30/octopress-on-github-and-bitbucket/">Octopressのインストールから運用管理まで &ndash; T.I.D.</a><br/>
-・<a href="http://blog.glidenote.com/blog/2011/12/20/how-to-use-custom-domain-on-github-pages/">GitHub PagesでCustom Domainを利用する &ndash; Glide Note &ndash; グライドノート</a></p>
+    [_sprite runAction:sequence];
+}
+</code></pre>
+
+<p>cocos2d-x2.xではblocksを使えないのでCCCallFuncを使うしかありません。</p>
+
+<pre><code>void Hoge::deadAnimation() {
+    CCAnimation animation = CCAnimation::createWithSpriteFrames(mFrames);
+    CCAnimate   animate   = CCAnimate::create(animation);
+    CCCallFunc  func      = CCCallFunc::create(this, callfunc_selector(Hoge::dead));
+    CCSequece   sequence  = CCSequence::create(animate, func, NULL);
+
+    mSprite-&gt;runAction(sequence);
+}
+
+void dead() {
+    mSprite-&gt;removeFromParentAndCleanup(true);
+    mScore-&gt;addScore(1000);
+    mSound-&gt;playSE();
+}
+</code></pre>
+
+<p>cocos2d-x3.0からC++11に対応したらしいのでラムダ式とか使ってCCCallBlockっぽく書けます。</p>
+
+<pre><code>void Hoge::deadAnimation() {
+    auto animation = Animation::createWithSptireFrames(mFrames);
+    auto animate   = Animate::create(animation);
+    auto func      = CallFunc::create(
+                                      [&amp;](){ 
+                                          mSprite-&gt;removeFromParentAndCleanup(true);
+                                          mScore-&gt;addScore(1000);
+                                          mSound-&gt;playSE();
+                                      });
+    auto sequence  = Sequence::create(animate, func, nullptr);
+
+    mSprite-&gt;runAction(sequence);
+}
+</code></pre>
+
+<p>インデントがちょっとすっきりしないけど、わりといい感じ！</p>
+
+<p>ちなみにcallbackを受け取りたいときは</p>
+
+<pre><code>void Hoge::hogeAnimation(const std::function&lt;void ()&gt; &amp;func) {
+    auto animation = Animation::createWithSptireFrames(mFrames);
+    auto animate   = Animate::create(animation);
+    auto callback  = CallFunc::create(func);
+    auto sequence  = Sequence::create(animate, callback, nullptr);
+
+    mSprite-&gt;runAction(sequence);
+}
+</code></pre>
+
+<p>みたいにできるはず。</p>
 </div>
 
 
@@ -136,15 +194,21 @@ Markdownの練習も兼ねてる</p>
   
 
 
-<time datetime="2013-10-24T23:11:00+09:00" pubdate data-updated="true">Oct 24<span>th</span>, 2013</time>
+<time datetime="2013-10-26T23:50:00+09:00" pubdate data-updated="true">Oct 26<span>th</span>, 2013</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d/'>cocos2d</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://kuroyam.github.io/blog/2013/10/24/octopress/" data-via="kuroyam" data-counturl="http://kuroyam.github.io/blog/2013/10/24/octopress/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://kuroyam.github.io/blog/2013/10/26/cocos2d/" data-via="kuroyam" data-counturl="http://kuroyam.github.io/blog/2013/10/26/cocos2d/" >Tweet</a>
   
   
   
@@ -153,8 +217,8 @@ Markdownの練習も兼ねてる</p>
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2013/10/24/octopress/" title="Previous Post: Hello Octopress">&laquo; Hello Octopress</a>
       
-        <a class="basic-alignment right" href="/blog/2013/10/26/cocos2d/" title="Next Post: cocos2d-xとラムダ式でCCCallBlockっぽいことをする">cocos2d-xとラムダ式でCCCallBlockっぽいことをする &raquo;</a>
       
     </p>
   </footer>

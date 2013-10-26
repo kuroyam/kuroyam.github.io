@@ -9,10 +9,8 @@
   <meta name="author" content="kuroyam">
 
   
-  <meta name="description" content="もっとアウトプットしていこうと思ったので。 なんかこう、エンジニアっぽい感じがするって理由で Github Pages と Octopress を使うことにした。
-Markdownの練習も兼ねてる 参考
-・Octopressのインストールから運用管理まで &ndash; T.I.D.
-・ &hellip;">
+  <meta name="description" content="cocos2d for iPhoneには CCCallBlock というすごく便利なメソッドがありました。 アニメーションシーケンスの中でblocksを呼べちゃうやつですね。
+アニメーション終了時になにか処理したいときとか、callbackとしてblocksを渡したりしたいときに便利でした &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -36,6 +34,18 @@ Markdownの練習も兼ねてる 参考
 
 
   
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-45018229-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 
@@ -66,6 +76,111 @@ Markdownの練習も兼ねてる 参考
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/26/cocos2d/">cocos2d-xとラムダ式でCCCallBlockっぽいことをする</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-26T23:50:00+09:00" pubdate data-updated="true">Oct 26<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>cocos2d for iPhoneには CCCallBlock というすごく便利なメソッドがありました。</p>
+
+<p>アニメーションシーケンスの中でblocksを呼べちゃうやつですね。<br/>
+アニメーション終了時になにか処理したいときとか、callbackとしてblocksを渡したりしたいときに便利でした。</p>
+
+<pre><code>- (void)deadAnimation {
+    id animation = [CCAnimation animationWithSpriteFrames:_frames];
+    id animate   = [CCAnimate actionWithAnimation:animation];
+    id blocks    = [CCCallBlock actionWithBlock:
+                    ^{ 
+                        [_sprite removeFromParentAndCleanup:YES];
+                        [_score addScore:1000];
+                        [_sound playSE];
+                    }];
+    id sequence  = [CCSequence actions:animate, blocks, nil];
+
+    [_sprite runAction:sequence];
+}
+</code></pre>
+
+<p>cocos2d-x2.xではblocksを使えないのでCCCallFuncを使うしかありません。</p>
+
+<pre><code>void Hoge::deadAnimation() {
+    CCAnimation animation = CCAnimation::createWithSpriteFrames(mFrames);
+    CCAnimate   animate   = CCAnimate::create(animation);
+    CCCallFunc  func      = CCCallFunc::create(this, callfunc_selector(Hoge::dead));
+    CCSequece   sequence  = CCSequence::create(animate, func, NULL);
+
+    mSprite-&gt;runAction(sequence);
+}
+
+void dead() {
+    mSprite-&gt;removeFromParentAndCleanup(true);
+    mScore-&gt;addScore(1000);
+    mSound-&gt;playSE();
+}
+</code></pre>
+
+<p>cocos2d-x3.0からC++11に対応したらしいのでラムダ式とか使ってCCCallBlockっぽく書けます。</p>
+
+<pre><code>void Hoge::deadAnimation() {
+    auto animation = Animation::createWithSptireFrames(mFrames);
+    auto animate   = Animate::create(animation);
+    auto func      = CallFunc::create(
+                                      [&amp;](){ 
+                                          mSprite-&gt;removeFromParentAndCleanup(true);
+                                          mScore-&gt;addScore(1000);
+                                          mSound-&gt;playSE();
+                                      });
+    auto sequence  = Sequence::create(animate, func, nullptr);
+
+    mSprite-&gt;runAction(sequence);
+}
+</code></pre>
+
+<p>インデントがちょっとすっきりしないけど、わりといい感じ！</p>
+
+<p>ちなみにcallbackを受け取りたいときは</p>
+
+<pre><code>void Hoge::hogeAnimation(const std::function&lt;void ()&gt; &amp;func) {
+    auto animation = Animation::createWithSptireFrames(mFrames);
+    auto animate   = Animate::create(animation);
+    auto callback  = CallFunc::create(func);
+    auto sequence  = Sequence::create(animate, callback, nullptr);
+
+    mSprite-&gt;runAction(sequence);
+}
+</code></pre>
+
+<p>みたいにできるはず。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -123,6 +238,10 @@ Markdownの練習も兼ねてる</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/26/cocos2d/">cocos2d-xとラムダ式でCCCallBlockっぽいことをする</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/10/24/octopress/">Hello Octopress</a>
