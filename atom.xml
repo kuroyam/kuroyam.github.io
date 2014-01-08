@@ -4,7 +4,7 @@
   <title><![CDATA[blog.kuroyam.info]]></title>
   <link href="http://kuroyam.github.io/atom.xml" rel="self"/>
   <link href="http://kuroyam.github.io/"/>
-  <updated>2014-01-09T01:06:42+09:00</updated>
+  <updated>2014-01-09T01:18:42+09:00</updated>
   <id>http://kuroyam.github.io/</id>
   <author>
     <name><![CDATA[kuroyam]]></name>
@@ -46,6 +46,11 @@
 <p>スマホだけに作る場合は余計にめんどくさくなった感じもするけれど、PC向けに作ったり、スマホとPCどっちもって時には<code>EventDispatcher</code>のほうがよさげっぽい。<br/>
 Layerだけじゃなくて各Nodeに<code>EventListener</code>を割り当てられるっぽいので、Layerがごちゃごちゃにならなくて済みそう。<br/>
 ここらへんはもうちょっと突っ込んで調べる。</p>
+
+<h2>cocos2d::Vector&lt;>とcocos2d::Map&lt;>の追加</h2>
+
+<p>std::でもよくね？という感じが。<br/>
+余談だけど地図という意味でMapという名前のクラスを作ってたので衝突してしまった・・・</p>
 
 <h2>・まとめ</h2>
 
