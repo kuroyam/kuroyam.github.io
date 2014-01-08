@@ -4,7 +4,7 @@
   <title><![CDATA[blog.kuroyam.info]]></title>
   <link href="http://kuroyam.github.io/atom.xml" rel="self"/>
   <link href="http://kuroyam.github.io/"/>
-  <updated>2013-10-31T22:47:13+09:00</updated>
+  <updated>2014-01-09T01:06:42+09:00</updated>
   <id>http://kuroyam.github.io/</id>
   <author>
     <name><![CDATA[kuroyam]]></name>
@@ -12,6 +12,53 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[cocos2d-x3.0betaでの変更点をざっくりまとめた]]></title>
+    <link href="http://kuroyam.github.io/blog/2014/01/08/cocos2dx3-dot-0-beta-update/"/>
+    <updated>2014-01-08T23:03:00+09:00</updated>
+    <id>http://kuroyam.github.io/blog/2014/01/08/cocos2dx3-dot-0-beta-update</id>
+    <content type="html"><![CDATA[<h2>・create_project.py</h2>
+
+<p>旧:</p>
+
+<pre><code>./create_project.py -p KusoGame -k com.kuroyam.kusogame -l cpp
+</code></pre>
+
+<p>新:</p>
+
+<pre><code>./create_project.py -n KamiGame -k com.kuroyam.kamigame -l cpp -p /User/kuroyam/dev/game
+</code></pre>
+
+<p>プロジェクト名は<code>-p</code>ではなく<code>-n</code>で指定、そのかわりに<code>-p</code>でプロジェクトが作られる場所を自由に指定できるようになったようです。</p>
+
+<h2>・proj.iosとproj.macの統合</h2>
+
+<p>proj.ios_macとなり、xcodeprojも一つに。</p>
+
+<h2>・入力周りが大きく変更</h2>
+
+<p><code>TouchDispatcher</code>が削除され<code>EventDispatcher</code>を使う形に変更されました（alphaからあったっぽい？）。<br/>
+名前がちょろっと変わっただけかなとおもいきや、けっこう大きく変わっているので詳細は公式で・・・</p>
+
+<p>・<a href="http://www.cocos2d-x.org/cocos-docs/manual/framework/native/input/event_dispatcher/en">Mechanism of EventDispatcher</a></p>
+
+<p>スマホだけに作る場合は余計にめんどくさくなった感じもするけれど、PC向けに作ったり、スマホとPCどっちもって時には<code>EventDispatcher</code>のほうがよさげっぽい。<br/>
+Layerだけじゃなくて各Nodeに<code>EventListener</code>を割り当てられるっぽいので、Layerがごちゃごちゃにならなくて済みそう。<br/>
+ここらへんはもうちょっと突っ込んで調べる。</p>
+
+<h2>・まとめ</h2>
+
+<p>たぶんこれで全部ではない気がする。<br/>
+全体的にC++11っぽく、クロスプラットフォームを意識して進化してるといった印象。<br/>
+alphaと完全に互換してるわけではないけど、新規で作ったプロジェクトに/Classと/Resourceをコピペして、<code>EventDispatcher</code>対応をすれば乗り換えもそこまで大変ではないかな。</p>
+
+<hr />
+
+<p>参考<br/>
+<a href="http://www.cocos2d-x.org/news">http://www.cocos2d-x.org/news</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[cocos2d-xとラムダ式でCCCallBlockっぽいことをする]]></title>

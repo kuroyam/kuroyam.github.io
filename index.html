@@ -9,8 +9,7 @@
   <meta name="author" content="kuroyam">
 
   
-  <meta name="description" content="cocos2d for iPhoneには CCCallBlock というすごく便利なメソッドがありました。 アニメーションシーケンスの中でblocksを呼べちゃうやつですね。
-アニメーション終了時になにか処理したいときとか、callbackとしてblocksを渡したりしたいときに便利でした &hellip;">
+  <meta name="description" content="・create_project.py 旧: ./create_project.py -p KusoGame -k com.kuroyam.kusogame -l cpp 新: ./create_project.py -n KamiGame -k com.kuroyam.kamigame -l &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +75,80 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/08/cocos2dx3-dot-0-beta-update/">cocos2d-x3.0betaでの変更点をざっくりまとめた</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-08T23:03:00+09:00" pubdate data-updated="true">Jan 8<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>・create_project.py</h2>
+
+<p>旧:</p>
+
+<pre><code>./create_project.py -p KusoGame -k com.kuroyam.kusogame -l cpp
+</code></pre>
+
+<p>新:</p>
+
+<pre><code>./create_project.py -n KamiGame -k com.kuroyam.kamigame -l cpp -p /User/kuroyam/dev/game
+</code></pre>
+
+<p>プロジェクト名は<code>-p</code>ではなく<code>-n</code>で指定、そのかわりに<code>-p</code>でプロジェクトが作られる場所を自由に指定できるようになったようです。</p>
+
+<h2>・proj.iosとproj.macの統合</h2>
+
+<p>proj.ios_macとなり、xcodeprojも一つに。</p>
+
+<h2>・入力周りが大きく変更</h2>
+
+<p><code>TouchDispatcher</code>が削除され<code>EventDispatcher</code>を使う形に変更されました（alphaからあったっぽい？）。<br/>
+名前がちょろっと変わっただけかなとおもいきや、けっこう大きく変わっているので詳細は公式で・・・</p>
+
+<p>・<a href="http://www.cocos2d-x.org/cocos-docs/manual/framework/native/input/event_dispatcher/en">Mechanism of EventDispatcher</a></p>
+
+<p>スマホだけに作る場合は余計にめんどくさくなった感じもするけれど、PC向けに作ったり、スマホとPCどっちもって時には<code>EventDispatcher</code>のほうがよさげっぽい。<br/>
+Layerだけじゃなくて各Nodeに<code>EventListener</code>を割り当てられるっぽいので、Layerがごちゃごちゃにならなくて済みそう。<br/>
+ここらへんはもうちょっと突っ込んで調べる。</p>
+
+<h2>・まとめ</h2>
+
+<p>たぶんこれで全部ではない気がする。<br/>
+全体的にC++11っぽく、クロスプラットフォームを意識して進化してるといった印象。<br/>
+alphaと完全に互換してるわけではないけど、新規で作ったプロジェクトに/Classと/Resourceをコピペして、<code>EventDispatcher</code>対応をすれば乗り換えもそこまで大変ではないかな。</p>
+
+<hr />
+
+<p>参考<br/>
+<a href="http://www.cocos2d-x.org/news">http://www.cocos2d-x.org/news</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -248,12 +321,15 @@ Markdownの練習も兼ねてる</p>
 <section>
   <h1>About Me</h1>
   <p>author: kuroyam</p>
-  <p>iOS, android, ゲーム制作など</p>
-  <p>タイトルを思いつかなかったんですけど、タイトルが表示されないテーマを見つけてしまったので、つけないことにしました。</p>
+  <p>iOS, Android, ゲーム開発など</p>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/08/cocos2dx3-dot-0-beta-update/">cocos2d-x3.0betaでの変更点をざっくりまとめた</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/10/26/cocos2d/">cocos2d-xとラムダ式でCCCallBlockっぽいことをする</a>
@@ -267,7 +343,7 @@ Markdownの練習も兼ねてる</p>
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/categories/cocos2d/'>cocos2d (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/cocos2d/'>cocos2d (2)</a></li></ul>
 </section>
 
   
@@ -276,7 +352,7 @@ Markdownの練習も兼ねてる</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - kuroyam -
+  Copyright &copy; 2014 - kuroyam -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
