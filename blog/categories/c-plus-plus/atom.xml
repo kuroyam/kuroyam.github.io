@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: C++ | kuroyam's blog]]></title>
+  <link href="http://kuroyam.github.io/blog/categories/c-plus-plus/atom.xml" rel="self"/>
+  <link href="http://kuroyam.github.io/"/>
+  <updated>2014-05-14T01:06:17+09:00</updated>
+  <id>http://kuroyam.github.io/</id>
+  <author>
+    <name><![CDATA[kuroyam]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[picojsonを使ってみた]]></title>
+    <link href="http://kuroyam.github.io/blog/2014/05/13/picojson/"/>
+    <updated>2014-05-13T23:46:00+09:00</updated>
+    <id>http://kuroyam.github.io/blog/2014/05/13/picojson</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/kazuho/picojson">kazuho/picojson</a></p>
+
+<p>久々にcocos2d-xでゲームを作っているけれど、plistでデータを持つのはC++11っぽくないし、<br/>
+jsonを使いた〜い、ということでC++のjsonライブラリを探していた。</p>
+
+<p>なにやら rapidjson と picojson がよさげとのこと。<br/>
+ブログ記事とかあさった感じだと</p>
+
+<p>速さ:      rapidjson > picojson<br/>
+使いやすさ: picojson > rapidjson</p>
+
+<p>という感じらしい。<br/>
+C++を使いこなしてるわけでもないので今回は使いやすいという picojson を使ってみることにした。</p>
+
+<hr />
+
+<h4>使ってみた</h4>
+
+<p>例えばこういうjsonがあるとして</p>
+
+<pre><code>{
+    "width"  : 10,
+    "height" : 10,
+    "mapchips" : [
+        1, 1, 1, 0, 1, 0, 0, 0, 0, 1,
+        1, 1, 1, 0, 1, 0, 0, 0, 0, 1,
+        1, 1, 0, 0, 1, 0, 0, 0, 0, 1,
+        1, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        0, 0, 0, 3, 3, 0, 0, 0, 0, 1,
+        2, 2, 2, 2, 3, 2, 2, 2, 2, 3,
+        2, 2, 2, 2, 2, 2, 2, 2, 3, 3
+    ]
+}
+</code></pre>
+
+<p>こんな感じでパースできる</p>
+
+<pre><code>void TerrainNode::parseJson(const char* jsonString)
+{
+    picojson::value value;
+    std::string error;
+    picojson::parse(value, jsonString, jsonString + strlen(jsonString), &amp;error);
+
+    if (!error.empty()) {
+        log("Json parse error: %s", error.c_str());
+    }
+
+    picojson::object&amp; object = value.get&lt;picojson::object&gt;();
+    _width  = object["width"].get&lt;double&gt;();
+    _height = object["height"].get&lt;double&gt;();
+
+    picojson::array&amp; array = object["mapchips"].get&lt;picojson::array&gt;();
+    for (auto i = array.begin(); i != array.end(); i++) {
+        _mapChips.push_back(static_cast&lt;Terrain&gt;(static_cast&lt;int&gt;(i-&gt;get&lt;double&gt;())));
+    }
+}
+</code></pre>
+
+<hr />
+
+<h4>感想</h4>
+
+<ul>
+<li>ヘッダファイル一個なので簡単に使えるのがいい</li>
+<li>数値をdoubleで取得するのでenum classにキャストするときに2回やらなくちゃいけない</li>
+<li>とはいえかなりお手軽に使えるのでとてもありがたい</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

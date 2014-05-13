@@ -5,14 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Hello Octopress - kuroyam's blog</title>
+  <title>picojsonを使ってみた - kuroyam's blog</title>
   <meta name="author" content="kuroyam">
 
   
-  <meta name="description" content="もっとアウトプットしていこうと思ったので。 なんかこう、エンジニアっぽい感じがするって理由で Github Pages と Octopress を使うことにした。
-Markdownの練習も兼ねてる 参考
-・Octopressのインストールから運用管理まで &ndash; T.I.D.
-・ &hellip;">
+  <meta name="description" content="kazuho/picojson 久々にcocos2d-xでゲームを作っているけれど、plistでデータを持つのはC++11っぽくないし、
+jsonを使いた〜い、ということでC++のjsonライブラリを探していた。 なにやら rapidjson と picojson がよさげとのこと。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +19,7 @@ Markdownの練習も兼ねてる 参考
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://kuroyam.github.io/blog/2013/10/24/octopress">
+  <link rel="canonical" href="http://kuroyam.github.io/blog/2014/05/13/picojson">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="kuroyam's blog" type="application/atom+xml">
@@ -67,7 +65,7 @@ Markdownの練習も兼ねてる 参考
   
   <header>
     
-      <h1 class="entry-title">Hello Octopress</h1>
+      <h1 class="entry-title">picojsonを使ってみた</h1>
     
     
       <p class="meta">
@@ -83,23 +81,84 @@ Markdownの練習も兼ねてる 参考
   
 
 
-<time datetime="2013-10-24T23:11:00+09:00" pubdate data-updated="true">Oct 24<span>th</span>, 2013</time>
+<time datetime="2014-05-13T23:46:00+09:00" pubdate data-updated="true">May 13<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>もっとアウトプットしていこうと思ったので。</p>
+<div class="entry-content"><p><a href="https://github.com/kazuho/picojson">kazuho/picojson</a></p>
 
-<p>なんかこう、エンジニアっぽい感じがするって理由で Github Pages と Octopress を使うことにした。<br/>
-Markdownの練習も兼ねてる</p>
+<p>久々にcocos2d-xでゲームを作っているけれど、plistでデータを持つのはC++11っぽくないし、<br/>
+jsonを使いた〜い、ということでC++のjsonライブラリを探していた。</p>
+
+<p>なにやら rapidjson と picojson がよさげとのこと。<br/>
+ブログ記事とかあさった感じだと</p>
+
+<p>速さ:      rapidjson > picojson<br/>
+使いやすさ: picojson > rapidjson</p>
+
+<p>という感じらしい。<br/>
+C++を使いこなしてるわけでもないので今回は使いやすいという picojson を使ってみることにした。</p>
 
 <hr />
 
-<p>参考<br/>
-・<a href="http://tokkonopapa.github.io/blog/2011/12/30/octopress-on-github-and-bitbucket/">Octopressのインストールから運用管理まで &ndash; T.I.D.</a><br/>
-・<a href="http://blog.glidenote.com/blog/2011/12/20/how-to-use-custom-domain-on-github-pages/">GitHub PagesでCustom Domainを利用する &ndash; Glide Note &ndash; グライドノート</a></p>
+<h4>使ってみた</h4>
+
+<p>例えばこういうjsonがあるとして</p>
+
+<pre><code>{
+    "width"  : 10,
+    "height" : 10,
+    "mapchips" : [
+        1, 1, 1, 0, 1, 0, 0, 0, 0, 1,
+        1, 1, 1, 0, 1, 0, 0, 0, 0, 1,
+        1, 1, 0, 0, 1, 0, 0, 0, 0, 1,
+        1, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        0, 0, 0, 3, 3, 0, 0, 0, 0, 1,
+        2, 2, 2, 2, 3, 2, 2, 2, 2, 3,
+        2, 2, 2, 2, 2, 2, 2, 2, 3, 3
+    ]
+}
+</code></pre>
+
+<p>こんな感じでパースできる</p>
+
+<pre><code>void TerrainNode::parseJson(const char* jsonString)
+{
+    picojson::value value;
+    std::string error;
+    picojson::parse(value, jsonString, jsonString + strlen(jsonString), &amp;error);
+
+    if (!error.empty()) {
+        log("Json parse error: %s", error.c_str());
+    }
+
+    picojson::object&amp; object = value.get&lt;picojson::object&gt;();
+    _width  = object["width"].get&lt;double&gt;();
+    _height = object["height"].get&lt;double&gt;();
+
+    picojson::array&amp; array = object["mapchips"].get&lt;picojson::array&gt;();
+    for (auto i = array.begin(); i != array.end(); i++) {
+        _mapChips.push_back(static_cast&lt;Terrain&gt;(static_cast&lt;int&gt;(i-&gt;get&lt;double&gt;())));
+    }
+}
+</code></pre>
+
+<hr />
+
+<h4>感想</h4>
+
+<ul>
+<li>ヘッダファイル一個なので簡単に使えるのがいい</li>
+<li>数値をdoubleで取得するのでenum classにキャストするときに2回やらなくちゃいけない</li>
+<li>とはいえかなりお手軽に使えるのでとてもありがたい</li>
+</ul>
+
 </div>
 
 
@@ -122,15 +181,21 @@ Markdownの練習も兼ねてる</p>
   
 
 
-<time datetime="2013-10-24T23:11:00+09:00" pubdate data-updated="true">Oct 24<span>th</span>, 2013</time>
+<time datetime="2014-05-13T23:46:00+09:00" pubdate data-updated="true">May 13<span>th</span>, 2014</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/c-plus-plus/'>C++</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://kuroyam.github.io/blog/2013/10/24/octopress/" data-via="kuroyam" data-counturl="http://kuroyam.github.io/blog/2013/10/24/octopress/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://kuroyam.github.io/blog/2014/05/13/picojson/" data-via="kuroyam" data-counturl="http://kuroyam.github.io/blog/2014/05/13/picojson/" >Tweet</a>
   
   
   
@@ -139,8 +204,8 @@ Markdownの練習も兼ねてる</p>
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2014/01/08/cocos2dx3-dot-0-beta-update/" title="Previous Post: cocos2d-x3.0betaでの変更点をざっくりまとめた">&laquo; cocos2d-x3.0betaでの変更点をざっくりまとめた</a>
       
-        <a class="basic-alignment right" href="/blog/2013/10/26/cocos2d/" title="Next Post: cocos2d-xとラムダ式でCCCallBlockっぽいことをする">cocos2d-xとラムダ式でCCCallBlockっぽいことをする &raquo;</a>
       
     </p>
   </footer>

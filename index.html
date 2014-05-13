@@ -5,11 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>blog.kuroyam.info</title>
+  <title>kuroyam's blog</title>
   <meta name="author" content="kuroyam">
 
   
-  <meta name="description" content="・create_project.py 旧: ./create_project.py -p KusoGame -k com.kuroyam.kusogame -l cpp 新: ./create_project.py -n KamiGame -k com.kuroyam.kamigame -l &hellip;">
+  <meta name="description" content="2014 picojsonを使ってみた
+May 13 2014 posted in C++ cocos2d-x3.0betaでの変更点をざっくりまとめた
+Jan 08 2014 posted in cocos2d 2013 cocos2d-xとラムダ式でCCCallBlockっぽいことをする &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,19 +20,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://kuroyam.github.io/">
+  <link rel="canonical" href="http://kuroyam.github.io">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <link href="/atom.xml" rel="alternate" title="kuroyam's blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="/javascripts/ender.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <link href="/atom.xml" rel="alternate" title="blog.kuroyam.info" type="application/atom+xml">
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-
 
   
   <script type="text/javascript">
@@ -50,267 +50,88 @@
 
 <body   >
   <header role="banner"><hgroup>
+  <div id="header-inner">
+    <span class="first"><a href="/">kuroyam's blog</a></span>
+    <span><a href="/about">about</a></span>
+    <!-- <span><a href="http://www.github.com/">projects</a></span> -->
+    <!-- <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span> -->
+  </div>
 </hgroup>
 
 </header>
-  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:kuroyam.github.io" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
-
-</nav> -->
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+
+<article role="article">
+<div id="blog-archives">
+  
+
   
   
+    
+    <h2>2014</h2>
   
     <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/08/cocos2dx3-dot-0-beta-update/">cocos2d-x3.0betaでの変更点をざっくりまとめた</a></h1>
-    
-    
-      <p class="meta">
-        
+<h1><a href="/blog/2014/05/13/picojson/">picojsonを使ってみた</a></h1>
+<time datetime="2014-05-13T23:46:00+09:00" pubdate><span class='month'>May</span> <span class='day'>13</span> <span class='year'>2014</span></time>
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-08T23:03:00+09:00" pubdate data-updated="true">Jan 8<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>・create_project.py</h2>
-
-<p>旧:</p>
-
-<pre><code>./create_project.py -p KusoGame -k com.kuroyam.kusogame -l cpp
-</code></pre>
-
-<p>新:</p>
-
-<pre><code>./create_project.py -n KamiGame -k com.kuroyam.kamigame -l cpp -p /User/kuroyam/dev/game
-</code></pre>
-
-<p>プロジェクト名は<code>-p</code>ではなく<code>-n</code>で指定、そのかわりに<code>-p</code>でプロジェクトが作られる場所を自由に指定できるようになったようです。</p>
-
-<h2>・proj.iosとproj.macの統合</h2>
-
-<p>proj.ios_macとなり、xcodeprojも一つに。</p>
-
-<h2>・入力周りが大きく変更</h2>
-
-<p><code>TouchDispatcher</code>が削除され<code>EventDispatcher</code>を使う形に変更されました（alphaからあったっぽい？）。<br/>
-名前がちょろっと変わっただけかなとおもいきや、けっこう大きく変わっているので詳細は公式で・・・</p>
-
-<p>・<a href="http://www.cocos2d-x.org/cocos-docs/manual/framework/native/input/event_dispatcher/en">Mechanism of EventDispatcher</a></p>
-
-<p>スマホだけに作る場合は余計にめんどくさくなった感じもするけれど、PC向けに作ったり、スマホとPCどっちもって時には<code>EventDispatcher</code>のほうがよさげっぽい。<br/>
-Layerだけじゃなくて各Nodeに<code>EventListener</code>を割り当てられるっぽいので、Layerがごちゃごちゃにならなくて済みそう。<br/>
-ここらへんはもうちょっと突っ込んで調べる。</p>
-
-<h2>cocos2d::Vector&lt;>とcocos2d::Map&lt;>の追加</h2>
-
-<p>std::でもよくね？という感じが。<br/>
-余談だけど地図という意味でMapという名前のクラスを作ってたので衝突してしまった・・・</p>
-
-<h2>・まとめ</h2>
-
-<p>たぶんこれで全部ではない気がする。<br/>
-全体的にC++11っぽく、クロスプラットフォームを意識して進化してるといった印象。<br/>
-alphaと完全に互換してるわけではないけど、新規で作ったプロジェクトに/Classと/Resourceをコピペして、<code>EventDispatcher</code>対応をすれば乗り換えもそこまで大変ではないかな。</p>
-
-<hr />
-
-<p>参考<br/>
-<a href="http://www.cocos2d-x.org/news">http://www.cocos2d-x.org/news</a></p>
-</div>
-  
-  
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/c-plus-plus/'>C++</a></span>
+</footer>
 
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/26/cocos2d/">cocos2d-xとラムダ式でCCCallBlockっぽいことをする</a></h1>
-    
-    
-      <p class="meta">
-        
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-26T23:50:00+09:00" pubdate data-updated="true">Oct 26<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>cocos2d for iPhoneには CCCallBlock というすごく便利なメソッドがありました。</p>
-
-<p>アニメーションシーケンスの中でblocksを呼べちゃうやつですね。<br/>
-アニメーション終了時になにか処理したいときとか、callbackとしてblocksを渡したりしたいときに便利でした。</p>
-
-<pre><code>- (void)deadAnimation {
-    id animation = [CCAnimation animationWithSpriteFrames:_frames];
-    id animate   = [CCAnimate actionWithAnimation:animation];
-    id blocks    = [CCCallBlock actionWithBlock:
-                    ^{ 
-                        [_sprite removeFromParentAndCleanup:YES];
-                        [_score addScore:1000];
-                        [_sound playSE];
-                    }];
-    id sequence  = [CCSequence actions:animate, blocks, nil];
-
-    [_sprite runAction:sequence];
-}
-</code></pre>
-
-<p>cocos2d-x2.xではblocksを使えないのでCCCallFuncを使うしかありません。</p>
-
-<pre><code>void Hoge::deadAnimation() {
-    CCAnimation animation = CCAnimation::createWithSpriteFrames(mFrames);
-    CCAnimate   animate   = CCAnimate::create(animation);
-    CCCallFunc  func      = CCCallFunc::create(this, callfunc_selector(Hoge::dead));
-    CCSequece   sequence  = CCSequence::create(animate, func, NULL);
-
-    mSprite-&gt;runAction(sequence);
-}
-
-void dead() {
-    mSprite-&gt;removeFromParentAndCleanup(true);
-    mScore-&gt;addScore(1000);
-    mSound-&gt;playSE();
-}
-</code></pre>
-
-<p>cocos2d-x3.0からC++11に対応したらしいのでラムダ式とか使ってCCCallBlockっぽく書けます。</p>
-
-<pre><code>void Hoge::deadAnimation() {
-    auto animation = Animation::createWithSptireFrames(mFrames);
-    auto animate   = Animate::create(animation);
-    auto func      = CallFunc::create(
-                                      [&amp;](){ 
-                                          mSprite-&gt;removeFromParentAndCleanup(true);
-                                          mScore-&gt;addScore(1000);
-                                          mSound-&gt;playSE();
-                                      });
-    auto sequence  = Sequence::create(animate, func, nullptr);
-
-    mSprite-&gt;runAction(sequence);
-}
-</code></pre>
-
-<p>インデントがちょっとすっきりしないけど、わりといい感じ！</p>
-
-<p>ちなみにcallbackを受け取りたいときは</p>
-
-<pre><code>void Hoge::hogeAnimation(const std::function&lt;void ()&gt; &amp;func) {
-    auto animation = Animation::createWithSptireFrames(mFrames);
-    auto animate   = Animate::create(animation);
-    auto callback  = CallFunc::create(func);
-    auto sequence  = Sequence::create(animate, callback, nullptr);
-
-    mSprite-&gt;runAction(sequence);
-}
-</code></pre>
-
-<p>みたいにできるはず。</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/24/octopress/">Hello Octopress</a></h1>
-    
-    
-      <p class="meta">
-        
+<h1><a href="/blog/2014/01/08/cocos2dx3-dot-0-beta-update/">cocos2d-x3.0betaでの変更点をざっくりまとめた</a></h1>
+<time datetime="2014-01-08T23:03:00+09:00" pubdate><span class='month'>Jan</span> <span class='day'>08</span> <span class='year'>2014</span></time>
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-24T23:11:00+09:00" pubdate data-updated="true">Oct 24<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>もっとアウトプットしていこうと思ったので。</p>
-
-<p>なんかこう、エンジニアっぽい感じがするって理由で Github Pages と Octopress を使うことにした。<br/>
-Markdownの練習も兼ねてる</p>
-
-<hr />
-
-<p>参考<br/>
-・<a href="http://tokkonopapa.github.io/blog/2011/12/30/octopress-on-github-and-bitbucket/">Octopressのインストールから運用管理まで &ndash; T.I.D.</a><br/>
-・<a href="http://blog.glidenote.com/blog/2011/12/20/how-to-use-custom-domain-on-github-pages/">GitHub PagesでCustom Domainを利用する &ndash; Glide Note &ndash; グライドノート</a></p>
-</div>
-  
-  
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/cocos2d/'>cocos2d</a></span>
+</footer>
 
 
     </article>
   
-  <div class="pagination">
+
+  
+  
     
-    <a href="archives">Blog Archives</a>
-    
-  </div>
+    <h2>2013</h2>
+  
+    <article>
+      
+<h1><a href="/blog/2013/10/26/cocos2d/">cocos2d-xとラムダ式でCCCallBlockっぽいことをする</a></h1>
+<time datetime="2013-10-26T23:50:00+09:00" pubdate><span class='month'>Oct</span> <span class='day'>26</span> <span class='year'>2013</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/cocos2d/'>cocos2d</a></span>
+</footer>
+
+
+    </article>
+  
+
+  
+  
+    <article>
+      
+<h1><a href="/blog/2013/10/24/octopress/">Hello Octopress</a></h1>
+<time datetime="2013-10-24T23:11:00+09:00" pubdate><span class='month'>Oct</span> <span class='day'>24</span> <span class='year'>2013</span></time>
+
+
+    </article>
+  
 </div>
+</article>
+</div>
+
 <aside class="sidebar">
   
     <section>
@@ -325,12 +146,15 @@ Markdownの練習も兼ねてる</p>
 </section>
 <section>
   <h1>About Me</h1>
-  <p>author: kuroyam</p>
-  <p>iOS, Android, ゲーム開発など</p>
+  <p>A little something about me.</p>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/05/13/picojson/">picojsonを使ってみた</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/01/08/cocos2dx3-dot-0-beta-update/">cocos2d-x3.0betaでの変更点をざっくりまとめた</a>
@@ -348,7 +172,7 @@ Markdownの練習も兼ねてる</p>
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/categories/cocos2d/'>cocos2d (2)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/c-plus-plus/'>C++ (1)</a></li><li><a href='/blog/categories/cocos2d/'>cocos2d (2)</a></li></ul>
 </section>
 
   

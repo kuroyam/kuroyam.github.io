@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: cocos2d | blog.kuroyam.info]]></title>
+  <title><![CDATA[Category: cocos2d | kuroyam's blog]]></title>
   <link href="http://kuroyam.github.io/blog/categories/cocos2d/atom.xml" rel="self"/>
   <link href="http://kuroyam.github.io/"/>
-  <updated>2014-01-09T01:18:42+09:00</updated>
+  <updated>2014-05-14T01:06:17+09:00</updated>
   <id>http://kuroyam.github.io/</id>
   <author>
     <name><![CDATA[kuroyam]]></name>
